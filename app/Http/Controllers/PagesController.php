@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Product;
 
 class PagesController extends Controller
 {
@@ -19,9 +21,13 @@ class PagesController extends Controller
         return view('pages.contact');
     }
 
-    public function product()
-    {
-        return view('pages.product.index');
+
+    public function product(){
+
+$products=Product::orderBy('id','desc')->get();
+
+        return view('pages.product.index')->with('products',$products);
+
     }
 
 }

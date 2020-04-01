@@ -14,12 +14,13 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('category_id')->unsigned();
+
+            $table->increments('id')->unsigned();
+            $table->integer('categories_id')->unsigned();
             $table->integer('brand_id')->unsigned();
             $table->string('title');
-            $table->string('slug');
             $table->text('description');
+            $table->string('slug');
             $table->integer('quantity')->default(1);
             $table->integer('price');
             $table->tinyInteger('status')->default(0);
