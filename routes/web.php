@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','PagesController@index');
+Route::get('/','PagesController@index')->name('index');
 
 
 
-Route::get('/contact','PagesController@contact');
+Route::get('/contact','PagesController@contact')->name('contact');
 
 
-Route::get('/product','PagesController@product');
+Route::get('/product','PagesController@product')->name('product');
+
+Route::group(['prefix'=>'admin'], function(){
+
+    Route::get('/','AdminPagesController@index')->name('admin.index');
+    Route::get('/create','AdminPagesController@create')->name('admin.product.create');
+    Route::post('/create','AdminPagesController@store')->name('admin.product.store');
+
+});
+
