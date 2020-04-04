@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use App\Product;
+use App\ProductImage;
+use Intervention\Image\Facades\Image;
 
 class AdminPagesController extends Controller
 {
@@ -36,6 +38,50 @@ class AdminPagesController extends Controller
         $product->brand_id=1;
         $product->categories_id=1;
         $product->save();
+
+     /*  // ProductImage Model inser Image
+
+        if ($request-> hasFile('product_image')){
+
+            // insert that image
+
+            $image =$request->file('product_image');
+            $img =time(). '.'.$image->getClientOriginalExtension();
+            $location=public_path('images/products/'.$img);
+
+            Image::make($image)->save( $location);
+            $product_image=new ProductImage;
+            $product_image->product_id= $product->id;
+            $product_image->image= $img;
+            $product_image->save();
+
+
+        }
+*/
+
+     if (count($request->product_image)>0){
+         foreach ($request->product_image as $image){
+
+                 // insert that image
+
+                 //$image =$request->file('product_image');
+                 $img =time(). '.'.$image->getClientOriginalExtension();
+                 $location=public_path('images/products/'.$img);
+
+                 Image::make($image)->save( $location);
+                 $product_image=new ProductImage;
+                 $product_image->product_id= $product->id;
+                 $product_image->image= $img;
+                 $product_image->save();
+
+
+
+         }
+     }
+
+
+
+
         return redirect()->route('admin.product.create');
 
 
