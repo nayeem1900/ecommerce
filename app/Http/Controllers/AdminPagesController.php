@@ -27,6 +27,20 @@ class AdminPagesController extends Controller
     public function store(Request $request)
     {
 
+
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'quantity' => 'required|numeric',
+            'price' => 'required|numeric',
+        ]);
+
+
+
+
+
+
         $product=new Product;
         $product->title=$request->title;
         $product->description=$request->description;
@@ -39,45 +53,39 @@ class AdminPagesController extends Controller
         $product->categories_id=1;
         $product->save();
 
-     /*  // ProductImage Model inser Image
+        /*  // ProductImage Model inser Image
+           if ($request-> hasFile('product_image')){
+               // insert that image
+               $image =$request->file('product_image');
+               $img =time(). '.'.$image->getClientOriginalExtension();
+               $location=public_path('images/products/'.$img);
+               Image::make($image)->save( $location);
+               $product_image=new ProductImage;
+               $product_image->product_id= $product->id;
+               $product_image->image= $img;
+               $product_image->save();
+           }
+   */
 
-        if ($request-> hasFile('product_image')){
+        if (count($request->product_image)>0){
+            foreach ($request->product_image as $image){
 
-            // insert that image
+                // insert that image
 
-            $image =$request->file('product_image');
-            $img =time(). '.'.$image->getClientOriginalExtension();
-            $location=public_path('images/products/'.$img);
+                //$image =$request->file('product_image');
+                $img =time(). '.'.$image->getClientOriginalExtension();
+                $location=public_path('images/products/'.$img);
 
-            Image::make($image)->save( $location);
-            $product_image=new ProductImage;
-            $product_image->product_id= $product->id;
-            $product_image->image= $img;
-            $product_image->save();
+                Image::make($image)->save( $location);
+                $product_image=new ProductImage;
+                $product_image->product_id= $product->id;
+                $product_image->image= $img;
+                $product_image->save();
 
 
+
+            }
         }
-*/
-
-     if (count($request->product_image)>0){
-         foreach ($request->product_image as $image){
-
-                 // insert that image
-
-                 //$image =$request->file('product_image');
-                 $img =time(). '.'.$image->getClientOriginalExtension();
-                 $location=public_path('images/products/'.$img);
-
-                 Image::make($image)->save( $location);
-                 $product_image=new ProductImage;
-                 $product_image->product_id= $product->id;
-                 $product_image->image= $img;
-                 $product_image->save();
-
-
-
-         }
-     }
 
 
 
